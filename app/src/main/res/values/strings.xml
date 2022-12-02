@@ -2,5 +2,5 @@
     <string name="app_name">WEATHERKA</string>
     <string name="appName">WEATHERKA</string>
     <string name="cityInput">Wpisz nazwę miasta</string>
-    <string name="searchButton">Pokaż pogode</string>
+    <string name="searchButton">Pokaż pogode długoterminową</string>
 </resources>
