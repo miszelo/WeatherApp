@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         Button show = (Button) findViewById(R.id.showBtn);
         show.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,CitySpecificWeather.class));
+                onCityInput(v);
             }
         });
     }

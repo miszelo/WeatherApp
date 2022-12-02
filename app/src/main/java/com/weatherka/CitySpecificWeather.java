@@ -14,7 +14,7 @@ public class CitySpecificWeather extends AppCompatActivity {
         setContentView(R.layout.activity_weather);
 
         Intent city = getIntent();
-        String cityName = city.getStringExtra(Intent.EXTRA_TEXT);
+        String cityName = city.getStringExtra("CITY_NAME");
         TextView cityInfo = (TextView) findViewById(R.id.cityName);
         cityInfo.setText(cityName);
     }
