@@ -22,9 +22,10 @@
         app:layout_constraintVertical_bias="0.05" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/cityNameInput"
         android:layout_width="350dp"
         android:layout_height="50dp"
+        android:layout_marginTop="272dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/cityInput"
@@ -32,16 +33,18 @@
         android:textAlignment="center"
         android:textColorHint="@color/whiteBlue"
         android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/showBtn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.402" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/showBtn"
         android:layout_width="140dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="257dp"
+        android:layout_marginBottom="180dp"
         android:background="@drawable/roundedbutton"
         android:gravity="center|center_horizontal|center_vertical"
         android:text="@string/searchButton"
@@ -51,7 +54,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
