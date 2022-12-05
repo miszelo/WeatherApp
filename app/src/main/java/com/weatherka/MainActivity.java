@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                         List<Address> addressList = geocoder.getFromLocation(
                                 location.getLatitude(), location.getLongitude(), 1
                         );
-                        addressText.setText(Html.fromHtml(addressList.get(0).getCountryName()));
+                        addressText.setText(Html.fromHtml(addressList.get(0).getCountryName()).toString());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
