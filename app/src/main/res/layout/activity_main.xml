@@ -23,8 +23,8 @@
 
     <EditText
         android:id="@+id/cityNameInput"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
+        android:layout_width="408dp"
+        android:layout_height="63dp"
         android:layout_marginTop="272dp"
         android:autofillHints=""
         android:ems="10"
@@ -61,16 +61,15 @@
         android:id="@+id/tempAct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
+        android:layout_marginStart="175dp"
         android:layout_marginTop="108dp"
-        android:layout_marginEnd="177dp"
-        android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/cityNameInput"
+        android:layout_marginEnd="175dp"
+        android:text="temperatura"
+        app:layout_constraintBottom_toTopOf="@+id/addressText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.044" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/locationButton"
@@ -80,7 +79,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="159dp"
         android:layout_marginBottom="42dp"
-        android:text="Get Loccation"
+        android:text="Pobierz lokalizacje"
         app:layout_constraintBottom_toTopOf="@+id/showBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -91,31 +90,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="175dp"
-        android:layout_marginTop="29dp"
-        android:layout_marginEnd="178dp"
-        android:text="test"
+        android:layout_marginEnd="175dp"
+        android:layout_marginBottom="128dp"
+        android:text="miasto"
+        app:layout_constraintBottom_toTopOf="@+id/cityNameInput"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tempAct" />
-
-    <TextView
-        android:id="@+id/latituteField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="51dp"
-        android:layout_marginTop="52dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <TextView
-        android:id="@+id/longitudeField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="58dp"
-        android:layout_marginTop="58dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/latituteField" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
