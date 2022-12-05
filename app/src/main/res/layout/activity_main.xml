@@ -13,13 +13,14 @@
         android:layout_height="wrap_content"
         android:text="@string/appName"
         android:textColor="@color/whiteBlue"
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.05" />
+        app:layout_constraintVertical_bias="0.023" />
 
     <EditText
         android:id="@+id/cityNameInput"
@@ -35,16 +36,16 @@
         android:textSize="34sp"
         app:layout_constraintBottom_toTopOf="@+id/showBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.402" />
+        app:layout_constraintVertical_bias="0.877" />
 
     <Button
         android:id="@+id/showBtn"
         android:layout_width="264dp"
         android:layout_height="74dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/roundedbutton"
         android:gravity="center|center_horizontal|center_vertical"
         android:text="@string/searchButton"
@@ -61,40 +62,28 @@
         android:id="@+id/tempAct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="175dp"
-        android:layout_marginTop="108dp"
-        android:layout_marginEnd="175dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="128dp"
         android:text="temperatura"
-        app:layout_constraintBottom_toTopOf="@+id/addressText"
+        android:textColor="@color/whiteBlue"
+        android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/locationButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="158dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="159dp"
-        android:layout_marginBottom="42dp"
-        android:text="Pobierz lokalizacje"
-        app:layout_constraintBottom_toTopOf="@+id/showBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cityNameInput" />
+        app:layout_constraintTop_toBottomOf="@+id/addressText" />
 
     <TextView
         android:id="@+id/addressText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="175dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="175dp"
-        android:layout_marginBottom="128dp"
         android:text="miasto"
-        app:layout_constraintBottom_toTopOf="@+id/cityNameInput"
+        android:textColor="@color/whiteBlue"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
