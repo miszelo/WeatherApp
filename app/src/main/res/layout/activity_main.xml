@@ -23,8 +23,8 @@
 
     <EditText
         android:id="@+id/cityNameInput"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
+        android:layout_width="408dp"
+        android:layout_height="63dp"
         android:layout_marginTop="272dp"
         android:autofillHints=""
         android:ems="10"
