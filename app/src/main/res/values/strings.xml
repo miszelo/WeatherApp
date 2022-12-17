@@ -3,4 +3,7 @@
     <string name="appName">WEATHERKA</string>
     <string name="cityInput">Wpisz nazwę miasta</string>
     <string name="searchButton">Pokaż pogode długoterminową</string>
+
+    <string name="noPermission">BRAK uprawnień do odczytu współrzędnych GPS!</string>
+    <string name="permissionGranted">Przyznano uprawnienia</string>
 </resources>

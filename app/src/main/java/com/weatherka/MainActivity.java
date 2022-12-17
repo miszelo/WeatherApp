@@ -1,106 +1,126 @@
 package com.weatherka;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import androidx.core.location.LocationListenerCompat;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements LocationListenerCompat {
 
     private TextView addressText;
-    private Button show;
-    private Button locationButton;
-    private FusedLocationProviderClient fusedLocationProviderClient;
+    private Button showButton;
+    private LocationManager locationManager;
+    private EditText cityInfo;
 
-
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.RequestPermission(), isGranted -> {
+                        if (isGranted) {
+                            Toast.makeText(getApplicationContext(),
+                                    R.string.permissionGranted, Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                    R.string.noPermission, Toast.LENGTH_LONG).show();
+                        }
+                    }
+            );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        show = findViewById(R.id.showBtn);
 
         //Main activity temperature view for actual location, **to implement**
         //TextView tempAct = (TextView) findViewById(R.id.tempAct);
 
-        show.setOnClickListener(this::onCityInput);
+        showButton = findViewById(R.id.showBtn);
+        cityInfo = findViewById(R.id.cityNameInput);
+        showButton.setOnClickListener(this::onCityInput);
 
-
-        locationButton = findViewById(R.id.locationButton);
         addressText = findViewById(R.id.addressText);
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        locationButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    getLocation();
-                } else {
-                    ActivityCompat.requestPermissions(MainActivity.this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
-                }
-            }
-        });
-    }
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-    private void getLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissionLauncher.launch((Manifest.permission.ACCESS_FINE_LOCATION));
         }
-        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-            @Override
-            public void onComplete(@NonNull Task<Location> task) {
-                Location location = task.getResult();
-                //location = task.
-                if (location==null) {
-                    System.out.println("TESTESTES");
-                }
-//                System.out.println(location.getLatitude() + " " + location.getLongitude());
-//                System.out.println(ApiCalls.getUrlApi(location.getLatitude(),location.getLongitude()));
-                if (location != null) {
-                    try {
-                        Geocoder geocoder = new Geocoder(MainActivity.this,
-                                Locale.getDefault());
-                        System.out.println(location.getLatitude() + " " + location.getLongitude());
-                        System.out.println(ApiCalls.getUrlApi(location.getLatitude(),location.getLongitude()));
-                        List<Address> addressList = geocoder.getFromLocation(
-                                location.getLatitude(), location.getLongitude(), 1
-                        );
-                        addressText.setText(Html.fromHtml(addressList.get(0).getCountryName()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
     }
 
     public void onCityInput(View view) {
-        EditText cityInfo = (EditText) findViewById(R.id.cityNameInput);
+
         Intent city = new Intent(MainActivity.this, CitySpecificWeather.class);
         city.putExtra("CITY_NAME", cityInfo.getText().toString());
         startActivity(city);
     }
 
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        double longitude = location.getLongitude();
+        double latitude = location.getLatitude();
+
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses;
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            addressText.setText(addresses.get(0).getLocality());
+            cityInfo.setText(addresses.get(0).getLocality());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, R.string.noPermission, Toast.LENGTH_LONG).show();
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500L, 20.f, this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        locationManager.removeUpdates(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
 }
