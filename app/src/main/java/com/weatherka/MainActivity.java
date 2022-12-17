@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private Button locationButton;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,14 +72,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
                 Location location = task.getResult();
+                //location = task.
+                if (location==null) {
+                    System.out.println("TESTESTES");
+                }
+//                System.out.println(location.getLatitude() + " " + location.getLongitude());
+//                System.out.println(ApiCalls.getUrlApi(location.getLatitude(),location.getLongitude()));
                 if (location != null) {
                     try {
                         Geocoder geocoder = new Geocoder(MainActivity.this,
                                 Locale.getDefault());
+                        System.out.println(location.getLatitude() + " " + location.getLongitude());
+                        System.out.println(ApiCalls.getUrlApi(location.getLatitude(),location.getLongitude()));
                         List<Address> addressList = geocoder.getFromLocation(
                                 location.getLatitude(), location.getLongitude(), 1
                         );
-                        addressText.setText(Html.fromHtml(addressList.get(0).getCountryName()).toString());
+                        addressText.setText(Html.fromHtml(addressList.get(0).getCountryName()));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
