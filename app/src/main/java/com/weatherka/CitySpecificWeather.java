@@ -5,9 +5,11 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.location.LocationListenerCompat;
 
@@ -28,7 +30,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class CitySpecificWeather extends AppCompatActivity{
+public class CitySpecificWeather extends AppCompatActivity {
 
     DecimalFormat df = new DecimalFormat("#.#");
 
@@ -37,7 +39,6 @@ public class CitySpecificWeather extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-
 
 
         Intent city = getIntent();
@@ -49,16 +50,16 @@ public class CitySpecificWeather extends AppCompatActivity{
         cityInfo.setText(cityName);
 
         try {
-            System.out.println(cityName+"GEOCODER");
-            System.out.println(String.valueOf(cityInfo.getText())+"GEOCODER");
-            if (cityName.equals("miasto")||cityName.equals("")) {
+            System.out.println(cityName + "GEOCODER");
+            System.out.println(String.valueOf(cityInfo.getText()) + "GEOCODER");
+            if (cityName.equals("miasto") || cityName.equals("")) {
                 cityInfo.setText(cityLocation);
-                System.out.println(cityName +"CITY NAME MIASTO");
+                System.out.println(cityName + "CITY NAME MIASTO");
             }
-            List<Address> addresses = geocoder.getFromLocationName(cityInfo.getText().toString(),1);
+            List<Address> addresses = geocoder.getFromLocationName(cityInfo.getText().toString(), 1);
             String lat = String.valueOf(addresses.get(0).getLatitude());
             String lon = String.valueOf(addresses.get(0).getLongitude());
-            resultTemp(ApiCalls.getUrlApi(lat,lon));
+            resultTemp(ApiCalls.getUrlApi(lat, lon));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,7 +67,7 @@ public class CitySpecificWeather extends AppCompatActivity{
     }
 
     public void resultTemp(String url) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -75,19 +76,28 @@ public class CitySpecificWeather extends AppCompatActivity{
                     JSONObject jsonObjectWeather = jsonArray.getJSONObject(0);
                     JSONObject jsonObjectMain = jsonResponse.getJSONObject("main");
                     TextView tempCity = (TextView) findViewById(R.id.tempCity);
-                    tempCity.setText(df.format(jsonObjectMain.getDouble("temp")-273.15)+"\u2103");
+                    tempCity.setText(df.format(jsonObjectMain.getDouble("temp") - 273.15) + "\u2103");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-        }, new Response.ErrorListener(){
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),error.toString().trim(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
             }
         });
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

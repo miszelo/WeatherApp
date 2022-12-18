@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
         //ApiCalls apiCalls = new ApiCalls();
 //        city.putExtra("temp", resultTemp(url));
 //        System.out.println(resultTemp(url));
+        city.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(city);
     }
 
