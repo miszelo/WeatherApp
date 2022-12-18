@@ -22,7 +22,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.location.LocationListenerCompat;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,6 +44,11 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
     private Button showButton;
     private LocationManager locationManager;
     private EditText cityInfo;
+    private TextView tempAct;
+    public String lat;
+    public String lon;
+    DecimalFormat df = new DecimalFormat("#.##");
+//    public String temp;
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(
@@ -71,8 +88,16 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
 
     public void onCityInput(View view) {
 
+
+
         Intent city = new Intent(MainActivity.this, CitySpecificWeather.class);
         city.putExtra("CITY_NAME", cityInfo.getText().toString());
+        city.putExtra("lon",lon);
+        city.putExtra("lat",lat);
+        String url = ApiCalls.getUrlApi(lat,lon);
+        //ApiCalls apiCalls = new ApiCalls();
+//        city.putExtra("temp", resultTemp(url));
+//        System.out.println(resultTemp(url));
         startActivity(city);
     }
 
@@ -86,7 +111,11 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1);
             addressText.setText(addresses.get(0).getLocality());
-            cityInfo.setText(addresses.get(0).getLocality());
+            //cityInfo.setText(addresses.get(0).getLocality());
+            lat = String.valueOf(addresses.get(0).getLatitude());
+            lon = String.valueOf(addresses.get(0).getLongitude());
+            resultTemp(ApiCalls.getUrlApi(lat,lon));
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -122,5 +151,32 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
     protected void onStop() {
         super.onStop();
         finish();
+    }
+
+    public void resultTemp(String url) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    JSONArray jsonArray = jsonResponse.getJSONArray("weather");
+                    JSONObject jsonObjectWeather = jsonArray.getJSONObject(0);
+                    JSONObject jsonObjectMain = jsonResponse.getJSONObject("main");
+                    System.out.println(df.format(jsonObjectMain.getDouble("temp")-273.15));
+                    TextView tempAct = (TextView) findViewById(R.id.tempAct);
+                    tempAct.setText(df.format(jsonObjectMain.getDouble("temp")-273.15)+"\u2103");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),error.toString().trim(),Toast.LENGTH_SHORT).show();
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
     }
 }
