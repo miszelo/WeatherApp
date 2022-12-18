@@ -43,11 +43,11 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
     private TextView addressText;
     private Button showButton;
     private LocationManager locationManager;
-    private EditText cityInfo;
+    private EditText cityNameInput;
     private TextView tempAct;
     public String lat;
     public String lon;
-    DecimalFormat df = new DecimalFormat("#.##");
+    DecimalFormat df = new DecimalFormat("#.#");
 //    public String temp;
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
@@ -68,11 +68,8 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Main activity temperature view for actual location, **to implement**
-        //TextView tempAct = (TextView) findViewById(R.id.tempAct);
-
         showButton = findViewById(R.id.showBtn);
-        cityInfo = findViewById(R.id.cityNameInput);
+        cityNameInput = findViewById(R.id.cityNameInput);
         showButton.setOnClickListener(this::onCityInput);
 
         addressText = findViewById(R.id.addressText);
@@ -91,9 +88,12 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
 
 
         Intent city = new Intent(MainActivity.this, CitySpecificWeather.class);
-        city.putExtra("CITY_NAME", cityInfo.getText().toString());
+        city.putExtra("CITY_NAME", cityNameInput.getText().toString());
+        System.out.println(cityNameInput.getText().toString());
         city.putExtra("lon",lon);
         city.putExtra("lat",lat);
+        city.putExtra("CITY_LOCATION_DEF",addressText.getText().toString());
+        System.out.println(addressText.getText().toString());
         String url = ApiCalls.getUrlApi(lat,lon);
         //ApiCalls apiCalls = new ApiCalls();
 //        city.putExtra("temp", resultTemp(url));

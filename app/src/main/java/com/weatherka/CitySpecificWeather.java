@@ -1,6 +1,8 @@
 package com.weatherka;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -19,28 +21,48 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.List;
+import java.util.Locale;
 
 public class CitySpecificWeather extends AppCompatActivity{
-    TextView tempCity;
 
-    DecimalFormat df = new DecimalFormat("#.##");
+    DecimalFormat df = new DecimalFormat("#.#");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
 
 
         Intent city = getIntent();
-
-        resultTemp(ApiCalls.getUrlApi(city.getStringExtra("lat"),city.getStringExtra("lon")));
-        String cityName = city.getStringExtra("CITY_NAME");
-        String temp = city.getStringExtra("temp");
         TextView cityInfo = (TextView) findViewById(R.id.cityName);
-        TextView tempCity = (TextView) findViewById(R.id.tempCity);
+        System.out.println(cityInfo.getText().toString());
+
+        String cityName = city.getStringExtra("CITY_NAME");
+        String cityLocation = city.getStringExtra("CITY_LOCATION_DEF");
         cityInfo.setText(cityName);
+
+        try {
+            System.out.println(cityName+"GEOCODER");
+            System.out.println(String.valueOf(cityInfo.getText())+"GEOCODER");
+            if (cityName.equals("miasto")||cityName.equals("")) {
+                cityInfo.setText(cityLocation);
+                System.out.println(cityName +"CITY NAME MIASTO");
+            }
+            List<Address> addresses = geocoder.getFromLocationName(cityInfo.getText().toString(),1);
+            String lat = String.valueOf(addresses.get(0).getLatitude());
+            String lon = String.valueOf(addresses.get(0).getLongitude());
+            resultTemp(ApiCalls.getUrlApi(lat,lon));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void resultTemp(String url) {
