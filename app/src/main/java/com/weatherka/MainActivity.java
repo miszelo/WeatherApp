@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
     DecimalFormat df = new DecimalFormat("#.#");
 //    public String temp;
 
+
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.RequestPermission(), isGranted -> {
