@@ -14,6 +14,10 @@ public class ApiCalls extends AppCompatActivity {
         return url+lat+"&lon="+lon+"&appid="+appid;
     }
 
+    public static String getUrlApiNextDays(String lat, String lon) {
+        return "https://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lon+"&appid="+appid;
+    }
+
 
 
 

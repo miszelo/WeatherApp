@@ -22,14 +22,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_width="406dp"
+        android:layout_height="313dp"
         android:layout_marginTop="73dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tempCity">
 
@@ -47,19 +49,26 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/firstDay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="104dp"
+                        android:layout_marginTop="0dp"
                         android:text=""
-                        android:textSize="20sp" />
+                        android:textAlignment="center"
+                        android:textSize="48sp" />
 
+                    <TextView
+                        android:id="@+id/jutro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Jutro"
+                        android:textAlignment="center" />
                 </LinearLayout>
+
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -71,19 +80,26 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/secondDay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="104dp"
+                        android:layout_marginTop="0dp"
                         android:text=""
-                        android:textSize="20sp" />
+                        android:textAlignment="center"
+                        android:textSize="48sp" />
 
+                    <TextView
+                        android:id="@+id/Pojutrze"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Pojutrze"
+                        android:textAlignment="center" />
                 </LinearLayout>
+
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -95,36 +111,65 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/thirdDay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="104dp"
+                        android:layout_marginTop="0dp"
                         android:text=""
-                        android:textSize="20sp" />
+                        android:textAlignment="center"
+                        android:textSize="48sp" />
 
+                    <TextView
+                        android:id="@+id/Za3dni"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Za 3 dni"
+                        android:textAlignment="center" />
                 </LinearLayout>
+
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </HorizontalScrollView>
 
-
     <TextView
         android:id="@+id/tempCity"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="147dp"
+        android:layout_height="83dp"
         android:gravity="center|center_horizontal|center_vertical"
         android:text="°C"
         android:textAlignment="center"
-        android:textSize="64sp"
+        android:textSize="34sp"
         app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cityName" />
+
+    <TextView
+        android:id="@+id/humCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="humidity"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tempCity"
+        app:layout_constraintVertical_bias="0.189" />
+
+    <TextView
+        android:id="@+id/pressureCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="pressure"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/humCity"
+        app:layout_constraintVertical_bias="0.126" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

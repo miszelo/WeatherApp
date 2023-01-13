@@ -60,10 +60,50 @@ public class CitySpecificWeather extends AppCompatActivity {
             String lat = String.valueOf(addresses.get(0).getLatitude());
             String lon = String.valueOf(addresses.get(0).getLongitude());
             resultTemp(ApiCalls.getUrlApi(lat, lon));
+            resultTempNextDays(ApiCalls.getUrlApiNextDays(lat,lon));
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void resultTempNextDays(String url) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    JSONArray jsonArray = jsonResponse.getJSONArray("list");
+                    //day 1
+                    JSONObject jsonObjectDay1 = jsonArray.getJSONObject(8);
+                    JSONObject jsonDay1 = jsonObjectDay1.getJSONObject("main");
+                    //day 2
+                    JSONObject jsonObjectDay2 = jsonArray.getJSONObject(16);
+                    JSONObject jsonDay2 = jsonObjectDay2.getJSONObject("main");
+                    //day 3
+                    JSONObject jsonObjectDay3 = jsonArray.getJSONObject(24);
+                    JSONObject jsonDay3 = jsonObjectDay3.getJSONObject("main");
+                    System.out.println(jsonDay1.getDouble("temp"));
+                    TextView day1 = (TextView) findViewById(R.id.firstDay);
+                    TextView day2 = (TextView) findViewById(R.id.secondDay);
+                    TextView day3 = (TextView) findViewById(R.id.thirdDay);
+                    day1.setText(df.format(jsonDay1.getDouble("temp")- 273.15)+"\u2103");
+                    day2.setText(df.format(jsonDay2.getDouble("temp")- 273.15)+"\u2103");
+                    day3.setText(df.format(jsonDay3.getDouble("temp")- 273.15)+"\u2103");
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
     }
 
     public void resultTemp(String url) {
@@ -75,8 +115,15 @@ public class CitySpecificWeather extends AppCompatActivity {
                     JSONArray jsonArray = jsonResponse.getJSONArray("weather");
                     JSONObject jsonObjectWeather = jsonArray.getJSONObject(0);
                     JSONObject jsonObjectMain = jsonResponse.getJSONObject("main");
+                    JSONObject nextDay1Main = jsonResponse.getJSONObject("main");
+                    System.out.println();
+
                     TextView tempCity = (TextView) findViewById(R.id.tempCity);
+                    TextView humCity = (TextView) findViewById(R.id.humCity);
+                    TextView pressureCity = (TextView) findViewById(R.id.pressureCity);
                     tempCity.setText(df.format(jsonObjectMain.getDouble("temp") - 273.15) + "\u2103");
+                    humCity.setText("Wilgotność: "+df.format(jsonObjectMain.getDouble("humidity"))+"%");
+                    pressureCity.setText("Ciśnienie: "+df.format(jsonObjectMain.getDouble("pressure"))+"hPa");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
