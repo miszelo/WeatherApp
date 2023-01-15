@@ -50,11 +50,8 @@ public class CitySpecificWeather extends AppCompatActivity {
         cityInfo.setText(cityName);
 
         try {
-            System.out.println(cityName + "GEOCODER");
-            System.out.println(String.valueOf(cityInfo.getText()) + "GEOCODER");
             if (cityName.equals("miasto") || cityName.equals("")) {
                 cityInfo.setText(cityLocation);
-                System.out.println(cityName + "CITY NAME MIASTO");
             }
             List<Address> addresses = geocoder.getFromLocationName(cityInfo.getText().toString(), 1);
             String lat = String.valueOf(addresses.get(0).getLatitude());
@@ -83,15 +80,12 @@ public class CitySpecificWeather extends AppCompatActivity {
                     //day 3
                     JSONObject jsonObjectDay3 = jsonArray.getJSONObject(24);
                     JSONObject jsonDay3 = jsonObjectDay3.getJSONObject("main");
-                    System.out.println(jsonDay1.getDouble("temp"));
                     TextView day1 = (TextView) findViewById(R.id.firstDay);
                     TextView day2 = (TextView) findViewById(R.id.secondDay);
                     TextView day3 = (TextView) findViewById(R.id.thirdDay);
                     day1.setText(df.format(jsonDay1.getDouble("temp")- 273.15)+"\u2103");
                     day2.setText(df.format(jsonDay2.getDouble("temp")- 273.15)+"\u2103");
                     day3.setText(df.format(jsonDay3.getDouble("temp")- 273.15)+"\u2103");
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -116,7 +110,6 @@ public class CitySpecificWeather extends AppCompatActivity {
                     JSONObject jsonObjectWeather = jsonArray.getJSONObject(0);
                     JSONObject jsonObjectMain = jsonResponse.getJSONObject("main");
                     JSONObject nextDay1Main = jsonResponse.getJSONObject("main");
-                    System.out.println();
 
                     TextView tempCity = (TextView) findViewById(R.id.tempCity);
                     TextView humCity = (TextView) findViewById(R.id.humCity);

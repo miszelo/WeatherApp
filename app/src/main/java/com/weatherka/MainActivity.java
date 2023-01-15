@@ -49,21 +49,15 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
     public String lat;
     public String lon;
     DecimalFormat df = new DecimalFormat("#.#");
-//    public String temp;
 
 
-    private final ActivityResultLauncher<String> requestPermissionLauncher =
-            registerForActivityResult(
-                    new ActivityResultContracts.RequestPermission(), isGranted -> {
-                        if (isGranted) {
-                            Toast.makeText(getApplicationContext(),
-                                    R.string.permissionGranted, Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(),
-                                    R.string.noPermission, Toast.LENGTH_LONG).show();
-                        }
-                    }
-            );
+    private final ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+        if (isGranted) {
+            Toast.makeText(getApplicationContext(), R.string.permissionGranted, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.noPermission, Toast.LENGTH_LONG).show();
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +71,7 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
         addressText = findViewById(R.id.addressText);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissionLauncher.launch((Manifest.permission.ACCESS_FINE_LOCATION));
         }
     }
@@ -88,18 +79,12 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
     public void onCityInput(View view) {
 
 
-
         Intent city = new Intent(MainActivity.this, CitySpecificWeather.class);
         city.putExtra("CITY_NAME", cityNameInput.getText().toString());
-        System.out.println(cityNameInput.getText().toString());
-        city.putExtra("lon",lon);
-        city.putExtra("lat",lat);
-        city.putExtra("CITY_LOCATION_DEF",addressText.getText().toString());
-        System.out.println(addressText.getText().toString());
-        String url = ApiCalls.getUrlApi(lat,lon);
-        //ApiCalls apiCalls = new ApiCalls();
-//        city.putExtra("temp", resultTemp(url));
-//        System.out.println(resultTemp(url));
+        city.putExtra("lon", lon);
+        city.putExtra("lat", lat);
+        city.putExtra("CITY_LOCATION_DEF", addressText.getText().toString());
+        String url = ApiCalls.getUrlApi(lat, lon);
         city.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(city);
     }
@@ -114,12 +99,9 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1);
             addressText.setText(addresses.get(0).getLocality());
-            //cityInfo.setText(addresses.get(0).getLocality());
             lat = String.valueOf(addresses.get(0).getLatitude());
             lon = String.valueOf(addresses.get(0).getLongitude());
-            resultTemp(ApiCalls.getUrlApi(lat,lon));
-
-
+            resultTemp(ApiCalls.getUrlApi(lat, lon));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -128,10 +110,7 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
     @Override
     protected void onResume() {
         super.onResume();
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, R.string.noPermission, Toast.LENGTH_LONG).show();
             return;
         }
@@ -141,10 +120,7 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
     @Override
     protected void onPause() {
         super.onPause();
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         locationManager.removeUpdates(this);
@@ -157,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
     }
 
     public void resultTemp(String url) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -165,18 +141,17 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
                     JSONArray jsonArray = jsonResponse.getJSONArray("weather");
                     JSONObject jsonObjectWeather = jsonArray.getJSONObject(0);
                     JSONObject jsonObjectMain = jsonResponse.getJSONObject("main");
-                    System.out.println(df.format(jsonObjectMain.getDouble("temp")-273.15));
                     TextView tempAct = (TextView) findViewById(R.id.tempAct);
-                    tempAct.setText(df.format(jsonObjectMain.getDouble("temp")-273.15)+"\u2103");
+                    tempAct.setText(df.format(jsonObjectMain.getDouble("temp") - 273.15) + "\u2103");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-        }, new Response.ErrorListener(){
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),error.toString().trim(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
             }
         });
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
