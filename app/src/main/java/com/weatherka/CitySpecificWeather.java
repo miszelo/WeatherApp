@@ -64,6 +64,7 @@ public class CitySpecificWeather extends AppCompatActivity {
         }
     }
 
+    //average temperature for the next 3 days
     public void resultTempNextDays(String url) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override

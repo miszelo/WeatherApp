@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
             Toast.makeText(getApplicationContext(), R.string.noPermission, Toast.LENGTH_LONG).show();
         }
     });
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
         }
     }
 
+    //Passing city name to intent
     public void onCityInput(View view) {
 
 
@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
         startActivity(city);
     }
 
+    //updating the location
     @Override
     public void onLocationChanged(@NonNull Location location) {
         double longitude = location.getLongitude();
@@ -132,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
         finish();
     }
 
+    //setting the temperature on main activity screen for current location
     public void resultTemp(String url) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
