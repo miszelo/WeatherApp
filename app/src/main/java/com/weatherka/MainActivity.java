@@ -77,8 +77,6 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
 
     //Passing city name to intent
     public void onCityInput(View view) {
-
-
         Intent city = new Intent(MainActivity.this, CitySpecificWeather.class);
         city.putExtra("CITY_NAME", cityNameInput.getText().toString());
         city.putExtra("lon", lon);
@@ -105,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements LocationListenerC
             resultTemp(ApiCalls.getUrlApi(lat, lon));
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("ESSA");
         }
     }
 

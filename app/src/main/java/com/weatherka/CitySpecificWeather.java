@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
@@ -48,20 +49,20 @@ public class CitySpecificWeather extends AppCompatActivity {
         String cityName = city.getStringExtra("CITY_NAME");
         String cityLocation = city.getStringExtra("CITY_LOCATION_DEF");
         cityInfo.setText(cityName);
-
         try {
             if (cityName.equals("miasto") || cityName.equals("")) {
                 cityInfo.setText(cityLocation);
             }
+            System.out.println();
             List<Address> addresses = geocoder.getFromLocationName(cityInfo.getText().toString(), 1);
             String lat = String.valueOf(addresses.get(0).getLatitude());
             String lon = String.valueOf(addresses.get(0).getLongitude());
             resultTemp(ApiCalls.getUrlApi(lat, lon));
             resultTempNextDays(ApiCalls.getUrlApiNextDays(lat,lon));
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     //average temperature for the next 3 days
@@ -140,5 +141,13 @@ public class CitySpecificWeather extends AppCompatActivity {
                 super.finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this,MainActivity.class);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
