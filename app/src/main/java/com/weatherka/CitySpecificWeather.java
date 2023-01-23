@@ -50,17 +50,24 @@ public class CitySpecificWeather extends AppCompatActivity {
         String cityLocation = city.getStringExtra("CITY_LOCATION_DEF");
         cityInfo.setText(cityName);
         try {
-            if (cityName.equals("miasto") || cityName.equals("")) {
+            if (cityName.equals("miasto") || cityName.equals("") || cityName.length()==1) {
                 cityInfo.setText(cityLocation);
             }
-            System.out.println();
-            List<Address> addresses = geocoder.getFromLocationName(cityInfo.getText().toString(), 1);
-            String lat = String.valueOf(addresses.get(0).getLatitude());
-            String lon = String.valueOf(addresses.get(0).getLongitude());
-            resultTemp(ApiCalls.getUrlApi(lat, lon));
-            resultTempNextDays(ApiCalls.getUrlApiNextDays(lat,lon));
-        } catch (IOException e) {
+            System.out.println(cityLocation);
+            try {
+                List<Address> addresses = geocoder.getFromLocationName(cityInfo.getText().toString(), 1);
+                String lat = String.valueOf(addresses.get(0).getLatitude());
+                String lon = String.valueOf(addresses.get(0).getLongitude());
+                resultTemp(ApiCalls.getUrlApi(lat, lon));
+                resultTempNextDays(ApiCalls.getUrlApiNextDays(lat,lon));
+            } catch (Exception e) {
+                Intent intent = new Intent(this,MainActivity.class);
+                Toast.makeText(this, "Takie miasto nie istnieje", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
+            System.out.println(cityLocation);
         }
 
     }
